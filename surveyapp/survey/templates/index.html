@@ -1,0 +1,104 @@
+<html>
+<head>
+<title>Palette Use Question</title>
+{% load staticfiles %}
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+<script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet">
+
+<style type="text/css">
+#bg {
+  background-image: url('{% static "palettebg.jpg" %}');
+  background-repeat: no-repeat;
+  /*background-position: center top;*/
+  background-position: 0% 50%;
+  background-size: cover !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#question-container {
+  position: relative;
+  top: 50%;
+}
+
+
+#question {
+  position: relative;
+  padding: 80px 100px 80px 100px;
+  background: rgb(34,34,34); /* for IE */
+  background: rgba(34,34,34,0.75);
+}
+
+#question h2, #question h5, #question h5 a { text-align: center; color: #fefefe; font-weight: normal; }
+
+.textbox { 
+    border: 1px solid #c4c4c4; 
+    padding: 4px 4px 4px 4px; 
+    border-radius: 4px; 
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    box-shadow: 0px 0px 8px #d9d9d9; 
+    -moz-box-shadow: 0px 0px 8px #d9d9d9; 
+    -webkit-box-shadow: 0px 0px 8px #d9d9d9; 
+} 
+ 
+.textbox:focus { 
+    outline: none; 
+    border: 1px solid #7bc1f7; 
+    box-shadow: 0px 0px 8px #7bc1f7; 
+    -moz-box-shadow: 0px 0px 8px #7bc1f7; 
+    -webkit-box-shadow: 0px 0px 8px #7bc1f7; 
+} 
+</style>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#question-container').hide().fadeIn(1250);
+  });
+</script>
+
+</head>
+
+<body>
+<div id="bg">
+  <div id="question-container">
+    <div id="question">
+      <form id="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>
+          {% if previous %}
+          I also want to use Palette for &nbsp; 
+          {% else %}
+          I want to use Palette for &nbsp; 
+          {% endif  %}
+          <input type="text" class="textbox" placeholder="ex: {{ example }}" name="text">
+          &nbsp; in &nbsp;
+          <select name="program">
+            <option value="Adobe Lightroom">Adobe Lightroom</option>
+            <option value="Adobe Photoshop">Adobe Photoshop</option>
+            <option value="Adobe After Effects">Adobe After Effects</option>
+            <option value="Adobe Illustrator">Adobe Illustrator</option>
+          </select>
+          &nbsp; 
+          <button type="submit" class="btn btn-primary btn-lg" value="Submit"><i class="fa fa-lg fa-cloud-upload"></i> Submit</button>
+        </h2>
+      </form>
+      {% if previous_responses %}
+        <h2>You've previously suggested: </h2>
+        <div id="responses" style="overflow: auto; height:100px; width: 40%; margin-left: auto; margin-right: auto;">
+        {% for response in previous_responses %}
+          <h5><i class="fa fa-check-square"></i> Using Palette for {{ response.text }} in {{ response.program }}</h5>
+        {% endfor %}
+        </div>
+     {% endif %}
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+
